@@ -32,4 +32,11 @@ public class Pacman : MonoBehaviour
 
         
     }
+
+    public void ResetState()
+    { 
+        
+        this.gameObject.SetActive(true);
+        this.movement.ResetState();
+    }
 }

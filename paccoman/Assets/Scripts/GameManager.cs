@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
         if (this.lives <= 0 && Input.anyKeyDown)
         {
             NewGame();
-            
         }
     }
     void NewGame()
@@ -44,10 +43,10 @@ public class GameManager : MonoBehaviour
         ResetGhostMultiplier();
         for (int i = 0; i < this.ghosts.Length; i++)
         {
-            this.ghosts[i].gameObject.SetActive(true);
+            this.ghosts[i].ResetState();
         }
 
-        this.pacman.gameObject.SetActive(true); 
+        this.pacman.ResetState();
     }
 
     void GameOver()
@@ -100,10 +99,15 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    public void PowerPellet(PowerPellet pellet)
+    public void PowerPelletEaten(PowerPellet pellet)
     {   
-        Invoke(nameof(ResetGhostMultiplier), pellet.duration);
+        for (int i = 0; i < this.ghosts.Length; i++)
+        {
+            this.ghosts[i].frightened.Enable(pellet.duration);
+        }
         PelletEaten(pellet);
+        CancelInvoke();
+        Invoke(nameof(ResetGhostMultiplier), pellet.duration);
     }
 
     private bool HasRemainingPellets()
